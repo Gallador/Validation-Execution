@@ -1,0 +1,45 @@
+{
+    "name": "validation",
+    "version": "1.0.0",
+    "description": "A simple CAP project.",
+    "repository": "<Add your repository here>",
+    "license": "UNLICENSED",
+    "private": true,
+    "dependencies": {
+        "@sap/cds": "^7",
+        "@sap/cds-hana": "^2",
+        "@sap/xssec": "^3",
+        "express": "^4",
+        "npm": "^10.2.3",
+        "passport": "^0"
+    },
+    "devDependencies": {
+        "@cap-js/sqlite": "^1",
+        "@sap/cds-dk": "^7",
+        "@sap/ux-specification": "^1.108.17",
+        "rimraf": "^3.0.2"
+    },
+    "scripts": {
+        "start": "cds-serve",
+        "watch-validation": "cds watch --open validation/webapp/index.html?sap-ui-xx-viewCache=false",
+        "undeploy": "cf undeploy validation --delete-services --delete-service-keys --delete-service-brokers",
+        "build": "rimraf resources mta_archives && mbt build --mtar archive",
+        "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+        "watch-checkset": "cds watch --open checkset/webapp/index.html?sap-ui-xx-viewCache=false",
+        "watch-scopeofcheck": "cds watch --open scopeofcheck/webapp/index.html?sap-ui-xx-viewCache=false",
+        "watch-parameters": "cds watch --open parameters/webapp/index.html?sap-ui-xx-viewCache=false",
+        "watch-messages": "cds watch --open messages/webapp/index.html?sap-ui-xx-viewCache=false"
+    },
+    "cds": {
+        "requires": {
+            "db": "hana"
+        }
+    },
+    "sapux": [
+        "app/validation",
+        "app/checkset",
+        "app/scopeofcheck",
+        "app/parameters",
+        "app/messages"
+    ]
+}

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Validation.V1.xml">
+        <edmx:Include Alias="Validation" Namespace="Org.OData.Validation.V1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="ValidationService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="ValidationExecution" EntityType="ValidationService.ValidationExecution">
+                    <NavigationPropertyBinding Path="toCheckSet" Target="CheckSet"/>
+                </EntitySet>
+                <EntitySet Name="CheckSet" EntityType="ValidationService.CheckSet">
+                    <NavigationPropertyBinding Path="toValidationExecution" Target="ValidationExecution"/>
+                    <NavigationPropertyBinding Path="toScopeOfCheck" Target="ScopeOfCheck"/>
+                </EntitySet>
+                <EntitySet Name="ScopeOfCheck" EntityType="ValidationService.ScopeOfCheck">
+                    <NavigationPropertyBinding Path="toCheckSet" Target="CheckSet"/>
+                    <NavigationPropertyBinding Path="toValidationExecParamValues" Target="ValidatinExecParamValues"/>
+                    <NavigationPropertyBinding Path="toValidationExecMessages" Target="ValidationExecMessages"/>
+                </EntitySet>
+                <EntitySet Name="ValidatinExecParamValues" EntityType="ValidationService.ValidatinExecParamValues">
+                    <NavigationPropertyBinding Path="toScopeOfCheck" Target="ScopeOfCheck"/>
+                </EntitySet>
+                <EntitySet Name="ValidationExecMessages" EntityType="ValidationService.ValidationExecMessages">
+                    <NavigationPropertyBinding Path="toScopeOfCheck" Target="ScopeOfCheck"/>
+                </EntitySet>
+            </EntityContainer>
+            <EntityType Name="ValidationExecution">
+                <Key>
+                    <PropertyRef Name="ExecutionGUID"/>
+                </Key>
+                <Property Name="ExecutionGUID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="SystemID" Type="Edm.Int32"/>
+                <Property Name="Mandt" Type="Edm.Int32"/>
+                <Property Name="Status" Type="Edm.String"/>
+                <Property Name="ExecutionStart" Type="Edm.DateTimeOffset"/>
+                <Property Name="ExecutionStop" Type="Edm.DateTimeOffset"/>
+                <Property Name="ExecutedBy" Type="Edm.String"/>
+                <NavigationProperty Name="toCheckSet" Type="Collection(ValidationService.CheckSet)" Partner="toValidationExecution">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="CheckSet">
+                <Key>
+                    <PropertyRef Name="CheckSetGUID"/>
+                </Key>
+                <Property Name="CheckSetGUID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="CheckSetID" Type="Edm.Int32"/>
+                <Property Name="CheckSetName" Type="Edm.String"/>
+                <Property Name="CheckSetDescription" Type="Edm.String"/>
+                <NavigationProperty Name="toValidationExecution" Type="ValidationService.ValidationExecution" Partner="toCheckSet">
+                    <ReferentialConstraint Property="toValidationExecution_ExecutionGUID" ReferencedProperty="ExecutionGUID"/>
+                </NavigationProperty>
+                <Property Name="toValidationExecution_ExecutionGUID" Type="Edm.Guid"/>
+                <NavigationProperty Name="toScopeOfCheck" Type="Collection(ValidationService.ScopeOfCheck)" Partner="toCheckSet">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="ScopeOfCheck">
+                <Key>
+                    <PropertyRef Name="ScopeOfCheckGUID"/>
+                </Key>
+                <Property Name="ScopeOfCheckGUID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="ScopeOfCheckID" Type="Edm.Int32"/>
+                <Property Name="ErrorNumber" Type="Edm.Int32"/>
+                <Property Name="MessageNumber" Type="Edm.Int32"/>
+                <NavigationProperty Name="toCheckSet" Type="ValidationService.CheckSet" Partner="toScopeOfCheck">
+                    <ReferentialConstraint Property="toCheckSet_CheckSetGUID" ReferencedProperty="CheckSetGUID"/>
+                </NavigationProperty>
+                <Property Name="toCheckSet_CheckSetGUID" Type="Edm.Guid"/>
+                <NavigationProperty Name="toValidationExecParamValues" Type="Collection(ValidationService.ValidatinExecParamValues)" Partner="toScopeOfCheck">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+                <NavigationProperty Name="toValidationExecMessages" Type="Collection(ValidationService.ValidationExecMessages)" Partner="toScopeOfCheck">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="ValidatinExecParamValues">
+                <Key>
+                    <PropertyRef Name="ValidationExecParamGUID"/>
+                </Key>
+                <Property Name="ValidationExecParamGUID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="ParametrID" Type="Edm.Int32"/>
+                <Property Name="Parametr" Type="Edm.String"/>
+                <Property Name="ParametrType" Type="Edm.String"/>
+                <Property Name="Sign" Type="Edm.String"/>
+                <Property Name="Option" Type="Edm.String"/>
+                <Property Name="Low" Type="Edm.String"/>
+                <Property Name="High" Type="Edm.String"/>
+                <NavigationProperty Name="toScopeOfCheck" Type="ValidationService.ScopeOfCheck" Partner="toValidationExecParamValues">
+                    <ReferentialConstraint Property="toScopeOfCheck_ScopeOfCheckGUID" ReferencedProperty="ScopeOfCheckGUID"/>
+                </NavigationProperty>
+                <Property Name="toScopeOfCheck_ScopeOfCheckGUID" Type="Edm.Guid"/>
+            </EntityType>
+            <EntityType Name="ValidationExecMessages">
+                <Key>
+                    <PropertyRef Name="ValidationExecMessagesGUID"/>
+                </Key>
+                <Property Name="ValidationExecMessagesGUID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="MessageID" Type="Edm.Int32"/>
+                <Property Name="MessageTest" Type="Edm.String"/>
+                <NavigationProperty Name="toScopeOfCheck" Type="ValidationService.ScopeOfCheck" Partner="toValidationExecMessages">
+                    <ReferentialConstraint Property="toScopeOfCheck_ScopeOfCheckGUID" ReferencedProperty="ScopeOfCheckGUID"/>
+                </NavigationProperty>
+                <Property Name="toScopeOfCheck_ScopeOfCheckGUID" Type="Edm.Guid"/>
+            </EntityType>
+            <Action Name="FillValidation" IsBound="true">
+                <Parameter Name="in" Type="ValidationService.ValidationExecution"/>
+            </Action>
+            <Annotations Target="ValidationService.ValidationExecution/Status">
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="Done"/>
+                            <PropertyValue Property="Value" String="Done"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="InProgress"/>
+                            <PropertyValue Property="Value" String="In Progress"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="Planned"/>
+                            <PropertyValue Property="Value" String="Planned (Job not started)"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="ValidationService.ValidatinExecParamValues/ParametrType">
+                <Annotation Term="Validation.AllowedValues">
+                    <Collection>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="Param"/>
+                            <PropertyValue Property="Value" String="Param"/>
+                        </Record>
+                        <Record Type="Validation.AllowedValue">
+                            <Annotation Term="Core.SymbolicName" String="SO"/>
+                            <PropertyValue Property="Value" String="SO"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

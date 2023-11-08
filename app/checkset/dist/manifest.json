@@ -1,0 +1,177 @@
+{
+    "_version": "1.58.0",
+    "sap.app": {
+        "id": "checkset",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "sourceTemplate": {
+            "id": "@sap/generator-fiori:lrop",
+            "version": "1.11.3",
+            "toolsId": "6cda4dc7-c36e-43fc-828d-ea8c2c1492db"
+        },
+        "dataSources": {
+            "mainService": {
+                "uri": "odata/v4/validation/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [],
+                    "localUri": "localService/metadata.xml",
+                    "odataVersion": "4.0"
+                }
+            }
+        },
+        "crossNavigation": {
+            "inbounds": {
+                "checkset-manage": {
+                    "semanticObject": "checkset",
+                    "action": "manage",
+                    "title": "{{flpTitle}}",
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    }
+                }
+            }
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": true,
+        "dependencies": {
+            "minUI5Version": "1.120.0",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {},
+                "sap.ushell": {},
+                "sap.fe.templates": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "checkset.i18n.i18n"
+                }
+            },
+            "": {
+                "dataSource": "mainService",
+                "preload": true,
+                "settings": {
+                    "synchronizationMode": "None",
+                    "operationMode": "Server",
+                    "autoExpandSelect": true,
+                    "earlyRequests": true
+                }
+            },
+            "@i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "uri": "i18n/i18n.properties"
+            }
+        },
+        "resources": {
+            "css": []
+        },
+        "routing": {
+            "config": {},
+            "routes": [
+                {
+                    "pattern": ":?query:",
+                    "name": "CheckSetList",
+                    "target": "CheckSetList"
+                },
+                {
+                    "pattern": "CheckSet({key}):?query:",
+                    "name": "CheckSetObjectPage",
+                    "target": "CheckSetObjectPage"
+                },
+                {
+                    "pattern": "CheckSet({key})/toScopeOfCheck({key2}):?query:",
+                    "name": "ScopeOfCheckObjectPage",
+                    "target": "ScopeOfCheckObjectPage"
+                }
+            ],
+            "targets": {
+                "CheckSetList": {
+                    "type": "Component",
+                    "id": "CheckSetList",
+                    "name": "sap.fe.templates.ListReport",
+                    "options": {
+                        "settings": {
+                            "contextPath": "/CheckSet",
+                            "variantManagement": "Page",
+                            "navigation": {
+                                "CheckSet": {
+                                    "detail": {
+                                        "route": "CheckSetObjectPage"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "CheckSetObjectPage": {
+                    "type": "Component",
+                    "id": "CheckSetObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": false,
+                            "contextPath": "/CheckSet",
+                            "navigation": {
+                                "toScopeOfCheck": {
+                                    "detail": {
+                                        "route": "ScopeOfCheckObjectPage"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "ScopeOfCheckObjectPage": {
+                    "type": "Component",
+                    "id": "ScopeOfCheckObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": false,
+                            "entitySet": "ScopeOfCheck"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "sap.fiori": {
+        "registrationIds": [],
+        "archeType": "transactional"
+    },
+    "sap.cloud": {
+        "public": true,
+        "service": "validation"
+    }
+}

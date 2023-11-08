@@ -1,0 +1,188 @@
+_schema-version: "3.1"
+ID: validation
+description: A simple CAP project.
+version: 1.0.0
+modules:
+- name: validation-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+  - name: validation-db
+  - name: uaa_validation
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+  build-parameters:
+    builder: npm
+- name: validation-db-deployer
+  type: hdb
+  path: gen/db
+  requires:
+  - name: validation-db
+  parameters:
+    buildpack: nodejs_buildpack
+- name: validation-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: validation-destination-service
+    parameters:
+      content-target: true
+  - name: validation_html_repo_host
+    parameters:
+      service-key:
+        name: validation_html_repo_host-key
+  - name: uaa_validation
+    parameters:
+      service-key:
+        name: uaa_validation-key
+  - name: srv-api
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Authentication: OAuth2UserTokenExchange
+          Name: validation-app-srv
+          TokenServiceInstanceName: validation-xsuaa-service
+          TokenServiceKeyName: uaa_validation-key
+          URL: ~{srv-api/srv-url}
+          sap.cloud.service: validation
+        - Name: validation_validation_html_repo_host
+          ServiceInstanceName: validation-html5-app-host-service
+          ServiceKeyName: validation_html_repo_host-key
+          sap.cloud.service: validation
+        - Authentication: OAuth2UserTokenExchange
+          Name: validation_uaa_validation
+          ServiceInstanceName: validation-xsuaa-service
+          ServiceKeyName: uaa_validation-key
+          sap.cloud.service: validation
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: validation-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: validation_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - validation.zip
+      name: validation
+      target-path: resources/
+    - artifacts:
+      - checkset.zip
+      name: checkset
+      target-path: resources/
+    - artifacts:
+      - scopeofcheck.zip
+      name: scopeofcheck
+      target-path: resources/
+    - artifacts:
+      - parameters.zip
+      name: parameters
+      target-path: resources/
+    - artifacts:
+      - messages.zip
+      name: messages
+      target-path: resources/
+- name: validation
+  type: html5
+  path: app/validation
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: checkset
+  type: html5
+  path: app/checkset
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: scopeofcheck
+  type: html5
+  path: app/scopeofcheck
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: parameters
+  type: html5
+  path: app/parameters
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: messages
+  type: html5
+  path: app/messages
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: validation-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+- name: validation-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: validation-destination-service
+    service-plan: lite
+- name: validation_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: validation-html5-app-host-service
+    service-plan: app-host
+- name: uaa_validation
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: validation-xsuaa-service
+    service-plan: application
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npx cds build --production

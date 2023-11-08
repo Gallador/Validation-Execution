@@ -1,0 +1,13 @@
+{
+                $Type : 'UI.DataField',
+                Value : ScopeOfCheckGUID,
+                Label :'{i18n>ScopeOfCheckGUID}',
+                ![@UI.Importance] : #High
+            },
+
+                            {
+                $Type : 'UI.DataField',
+                Label :'{i18n>ScopeOfCheckGUID}',
+                Value : ScopeOfCheckGUID,
+                ![@UI.Importance] : #High
+            },

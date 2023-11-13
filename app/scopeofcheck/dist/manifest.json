@@ -108,6 +108,16 @@
                     "pattern": "ScopeOfCheck({key}):?query:",
                     "name": "ScopeOfCheckObjectPage",
                     "target": "ScopeOfCheckObjectPage"
+                },
+                {
+                    "pattern": "ScopeOfCheck({key})/toValidationExecParamValues({key2}):?query:",
+                    "name": "ValidationExecParamValuesObjectPage",
+                    "target": "ValidationExecParamValuesObjectPage"
+                },
+                {
+                    "pattern": "ScopeOfCheck({key})/toValidationExecMessages({key2}):?query:",
+                    "name": "ValidationExecMessagesObjectPage",
+                    "target": "ValidationExecMessagesObjectPage"
                 }
             ],
             "targets": {
@@ -136,7 +146,41 @@
                     "options": {
                         "settings": {
                             "editableHeaderContent": false,
-                            "contextPath": "/ScopeOfCheck"
+                            "contextPath": "/ScopeOfCheck",
+                            "navigation": {
+                                "toValidationExecParamValues": {
+                                    "detail": {
+                                        "route": "ValidationExecParamValuesObjectPage"
+                                    }
+                                },
+                                "toValidationExecMessages": {
+                                    "detail": {
+                                        "route": "ValidationExecMessagesObjectPage"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "ValidationExecParamValuesObjectPage": {
+                    "type": "Component",
+                    "id": "ValidationExecParamValuesObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": false,
+                            "entitySet": "ValidationExecParamValues"
+                        }
+                    }
+                },
+                "ValidationExecMessagesObjectPage": {
+                    "type": "Component",
+                    "id": "ValidationExecMessagesObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": false,
+                            "entitySet": "ValidationExecMessages"
                         }
                     }
                 }

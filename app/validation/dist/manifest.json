@@ -111,6 +111,11 @@
                     "pattern": "ValidationExecution({key})/toCheckSet({key2}):?query:",
                     "name": "CheckSetObjectPage",
                     "target": "CheckSetObjectPage"
+                },
+                {
+                    "pattern": "toCheckSet({key2})/toScopeOfCheck({key3}):?query:",
+                    "name": "ScopeOfCheckObjectPage",
+                    "target": "ScopeOfCheckObjectPage"
                 }
             ],
             "targets": {
@@ -157,7 +162,25 @@
                     "options": {
                         "settings": {
                             "editableHeaderContent": false,
-                            "entitySet": "CheckSet"
+                            "entitySet": "CheckSet",
+                            "navigation": {
+                                "toScopeOfCheck": {
+                                    "detail": {
+                                        "route": "ScopeOfCheckObjectPage"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "ScopeOfCheckObjectPage": {
+                    "type": "Component",
+                    "id": "ScopeOfCheckObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": false,
+                            "entitySet": "ScopeOfCheck"
                         }
                     }
                 }

@@ -1,0 +1,6 @@
+ValidationExecParamGUID,ParametrID,Parametr,ParametrType,Sign,Option,Low,High,toScopeOfCheck_ScopeOfCheckGUID
+77968d2c-e1d0-4ec3-9dcb-ee1225155d7b,401,Param1,Param,Positive,Option1,Low1,High1,77968d2c-e1d0-4ec3-9dcb-ee1225155d7a
+df9bb5a7-6eb7-492f-8e3c-0f35d0f512d8,402,Param2,SO,Negative,Option2,Low2,High2,df9bb5a7-6eb7-492f-8e3c-0f35d0f512d9
+6d54a478-1b0b-43de-8e4b-1668db6963be,403,Param3,Param,Positive,Option3,Low3,High3,6d54a478-1b0b-43de-8e4b-1668db6963bd
+26fc85f0-046a-4b59-8c24-798ac5a34b3c,404,Param4,SO,Negative,Option4,Low4,High4,26fc85f0-046a-4b59-8c24-798ac5a34b3b
+bf6f9a9e-5b0c-48d3-8f9e-1a6e3a29f5d2,405,Param5,Param,Positive,Option5,Low5,High5,bf6f9a9e-5b0c-48d3-8f9e-1a6e3a29f5d1

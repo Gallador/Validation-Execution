@@ -1,0 +1,6 @@
+ExecutionGUID,SystemID,Mandt,Status,ExecutionStart,ExecutionStop,ExecutedBy
+4ba0e32b-c82d-4d97-9eac-1a161c3b9f50,101,1,Done,2023-10-13T09:00:00,2023-10-13T10:00:00,John Doe
+a5af9ea4-118a-4c9a-8c6a-3a8ea3a4e1f1,102,2,InProgress,2023-10-13T10:30:00,2023-10-13T11:30:00,Jane Smith
+e9cb17f0-8eae-4bf3-94a0-3ea2b6cf6a91,103,1,Planned (Job not started),2023-10-13T12:00:00,2023-10-13T13:00:00,Michael Johnson
+c1c75c35-1a9a-40f6-838a-1b0c336be4bf,104,2,Done,2023-10-13T14:00:00,2023-10-13T15:00:00,Emily Brown
+95f71c7a-688f-4a47-987c-721c23e4f5d4,105,1,InProgress,2023-10-13T15:30:00,2023-10-13T16:30:00,Robert Davis
